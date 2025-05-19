@@ -21,7 +21,11 @@ OP_NODE_P2P_STATIC={staticPeers}
 '''
 
 def fetch_data(api_path, slug):
-    with urllib.request.urlopen(f'{CONDUIT_API_URL}{api_path}{slug}') as response:
+    url = f'{CONDUIT_API_URL}{api_path}{slug}'
+    req = urllib.request.Request(
+        url,
+        headers={'User-Agent': 'Mozilla/5.0'}) # request is blocked with 403 unless specifying user agent
+    with urllib.request.urlopen(req) as response:
         return response.read()
 
 parser = argparse.ArgumentParser(description='Download Conduit Configs')
